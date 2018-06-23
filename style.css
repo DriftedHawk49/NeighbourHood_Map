@@ -18,6 +18,7 @@ header{
 
 ul{
 	list-style-type: none;
+	padding: 0px;
 }
 
 #map{
@@ -29,7 +30,6 @@ ul{
 }
 .sidebar{
 	width: 300px;
-	height: 700px;
 	position: absolute;
 	top: 110px;
 	background-color: #F8EFBA;
@@ -64,6 +64,35 @@ ul{
 	text-shadow: 1px 1px 0px #5D5C5B;
 
 }
+
+
+/*For Info Windows*/
+
+.info-div{
+	border: 1px solid black;
+	border-radius: 5px 5px 5px 5px;
+	text-align: center;
+	width: 200px;
+	background-color: #F97665;
+}
+
+.info-head{
+	background-color: #FDEDEB;
+	border-radius: 5px 5px 5px 5px;
+	font-size: 1em;
+}
+
+.info-list{
+	list-style: none;
+	border-radius: 5px 5px 5px 5px;
+	text-align: left;
+	padding: 10px;
+	background-color: #FDEDEB;
+}
+
+
+
+
 
 @keyframes rotate{
 
@@ -100,4 +129,16 @@ ul{
 
 .hidden{
 	display: none;
+}
+
+li{
+	border: 1px solid black;
+	margin-bottom: 5px;
+	cursor: pointer;
+	background-color: #B2FB92;
+	text-align: center;
+}
+
+li:hover{
+	font-weight: bold;
 }
