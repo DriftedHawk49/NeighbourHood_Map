@@ -1,0 +1,103 @@
+*{
+	font-family: 'Roboto', sans-serif;
+}
+
+body{
+	margin: 0px 0px 0px 0px;
+}
+
+header{
+	/*vertical-align: top;*/
+	z-index: 1;
+	margin: 0px 0px 0px 0px;
+	text-align: right;
+	background-color: #F18E79;
+	border-bottom: 2px solid #4E4C4C;
+
+}
+
+ul{
+	list-style-type: none;
+}
+
+#map{
+	height: 900px;
+}
+
+.box{
+	border: 1px solid black;
+}
+.sidebar{
+	width: 300px;
+	height: 700px;
+	position: absolute;
+	top: 110px;
+	background-color: #F8EFBA;
+	z-index: 1;
+}
+
+.icon{
+	position: absolute;
+	width:50px;
+	height: 50px;
+	display: block;
+	background-color: #DBDBD9;
+	border-radius: 5px 5px 5px 5px;
+	border: 1px solid black;
+	z-index: 1;
+}
+
+.bars{
+	width: 25px;
+	height: 0px;
+	margin: auto;
+	margin-top: 10px;
+	display: block;
+	border: 1px solid black;
+}
+
+.main-heading{
+	display: inline-block;
+	font-size: 3em;
+	margin: 0px 0px;
+	color: #343333;
+	text-shadow: 1px 1px 0px #5D5C5B;
+
+}
+
+@keyframes rotate{
+
+}
+.slideForward{
+	animation-name: slideF;
+	animation-duration: 0.5s;
+}
+
+.slideBackward{
+	animation-name: slideB;
+	animation-duration: 0.5s;
+}
+
+@keyframes slideB {
+	from{
+
+	}
+	to{
+		width: 0px;
+	}
+}
+
+
+@keyframes slideF {
+	from{
+		width: 0px;
+	}
+
+	to{
+		width: 300px;
+	}
+}
+
+.hidden{
+	display: none;
+}
