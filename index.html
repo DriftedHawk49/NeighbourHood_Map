@@ -38,7 +38,9 @@
 	<br>
 	<span>Results Found : <i data-bind="text: resultCounter"></i></span>
 		<ul data-bind="foreach: placeArray">
-			<li class="side-list" data-bind="text: name"></li>
+			<li class="side-list" data-bind="click: listClick">
+				<span data-bind="text: name"></span>
+			</li>
 		</ul>
 
 

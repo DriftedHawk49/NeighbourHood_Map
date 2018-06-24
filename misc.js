@@ -183,7 +183,6 @@ var viewModel = function(){
 			placeArray([]);																				// Empty the placeArray so the menu list can be changed.
 			placeArray(altArray);																		// Initialise the placeArray with the altArray so that only filtered results are seen on the menu
 			resultCounter(placeArray().length);															// Update the resultCounter Observable with the length of the new placeArray, which will be a count of results found & accordingly UI can be changed
-			assignClick();																				// This function which assign the "Click menu tiles to open respective info window" feature to new updated placesArray
 		}
 		else{
 			alert("No Filters Are Selected. Please Try With Filters Applied.");							// If user just clicks the filter button without applying any filters , then alert the user not to misuse it.
@@ -205,9 +204,20 @@ var viewModel = function(){
 				rest.marker.setMap(map);
 			}
 			resultCounter(placeArray().length);															// Update the results found on UI
-			assignClick();																				// Assign Clicks on the li items to open their own info window.
 		}
 	}
+
+	self.listClick = function(arg){																		// This Function Will Be Called Whenever The List-item in sidebar is clicked. It is implemented using Knockout Click Binding.
+		var targetName = arg.name;																		// store the name of the restaurent present in the clicked element
+			for(let rest of placeArray()){																// Loop through all the restaurant objects ,
+				if(rest.name ===targetName){															// When the name & the targetName Matches ,
+					toggleBounce(rest.marker);															// Make the respective Marker bounce
+					addInfoWindow(rest.infowindow,rest.marker);											// And show the info window.
+				}
+			}
+	}
+
+
 
 }
 // End of ViewModel
@@ -354,21 +364,9 @@ var setInfoWindows = function(){																		// Function that sets the info
 			});
 			resto.infowindow = infowindow;																// Assign the infowindow object created to restaurant infowindow property.
 		}
-		assignClick();																					// This function enables the "click on the sidelist menu to show the infoWIndow" feature
+
 };
 
-
-var assignClick = function(){																			// This function assigns the "on click" property to all the list items in the side list , so that when a list item is clicked , respective marker is activated & info window shows up for that restaurant
-		$(".side-list").on('click',function(arg){														// On clicking the list element,
-			var targetName = arg.target.innerText;														// store the name of the restaurent present in the clicked element
-			for(let rest of placeArray()){																// Loop through all the restaurant objects ,
-				if(rest.name ===targetName){															// When the name & the targetName Matches ,
-					toggleBounce(rest.marker);															// Make the respective Marker bounce
-					addInfoWindow(rest.infowindow,rest.marker);											// And show the info window.
-				}
-			}
-		});
-}
 
 
 
