@@ -22,7 +22,7 @@ This Project is the implementation of a Web APP which shows the restaurant locat
 * Initially , Default Location Loaded is the centre of New Delhi, and restaurants shown are within the 1km range of that location.
 * Wherever you click on the Map, Within New Delhi Only , That Location is pinned with a blue custom Marker
 ![Custom Blue Pin]
-(NeighbourHood_Map/Asset_Files/Visual_Assets/myMarker.png)
+(https://github.com/DriftedHawk49/NeighbourHood_Map/blob/master/Asset_Files/Visual_Assets/myMarker.png)
 * Then Results within 1km around user-dropped pin are shown on the map.
 * Clicking On a marker will show information about that place,
 
