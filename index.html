@@ -33,8 +33,9 @@
 
 	</form>
 	<button data-bind="click: filterOut" id="filterButton">Refine Search</button>
-
-
+	<button data-bind="click: resetFilters"> Reset All Filters </button>
+	<br>
+	<span>Results Found : <i data-bind="text: resultCounter"></i></span>
 		<ul data-bind="foreach: placeArray">
 			<li class="side-list" data-bind="text: name"></li>
 		</ul>
@@ -44,7 +45,7 @@
 	</div>
 	<div id="map"></div>
 
-<!-- <script src="app.js" type="text/javascript"></script> -->
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFuGupMznSxVJTxwtd3AfuYHgyjMNQmqI&libraries=geometry&callback=initMap"
     async defer></script>
     <script src="misc.js" type="text/javascript"></script>

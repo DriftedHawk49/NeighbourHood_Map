@@ -6,28 +6,12 @@ var centre = {
 			lat: 28.614954,
 			lng: 77.213139
 	};
-
+var placeArrayCopy = [];
 var radius = 1000;
 var markerArray = [];
 var selectMarker;
 var infoWindowArray = [];
 var activeInfoWindow;
-
-
-
-// var applyFilters = function(){
-// 	var nameFilter = $("#name").val();
-// 	var priceFilter = $("#price").val();
-// 	var onlineD;
-// 	if($("#yes")[0].checked===true){
-// 		onlineD = "true";
-// 	} else if($("#no")[0].checked===true){
-// 		onlineD = "false";
-// 	} else {
-// 		onlineD =
-// 	}
-// }
-
 
 
 
@@ -37,9 +21,8 @@ var viewModel = function(){
 	var slide = false;
 
 	self.markerPosition = ko.observable();
-
+	self.resultCounter = ko.observable();
 	self.placeArray = ko.observableArray();
-	self.placeArrayCopy = ko.observableArray();
 
 	self.checkSlide = function() {
 					if(slide===false){
@@ -48,7 +31,7 @@ var viewModel = function(){
 				setTimeout(function(){
 					$("#text-containment").toggleClass("hidden");
 					$(".sidebar").toggleClass("slideForward");
-				},500);
+				},200);
 				slide=true;
 				}
 				else{
@@ -59,21 +42,22 @@ var viewModel = function(){
 						$(".sidebar").toggleClass("slideBackward");
 						// console.log("I'm Done");
 						slide=false;
-					},500);
+					},200);
 				}
 				}
 	self.maxPrice = ko.observable();
 	self.nameString = ko.observable();
 	self.onlineDelivery = ko.observable("null");
 	self.filterOut = function(){
-		console.log("maxPrice = "+maxPrice());
-		console.log("Name Query = "+nameString());
-		console.log("Online Delivery = "+onlineDelivery());
 		if(maxPrice()!=undefined||nameString()!=undefined||onlineDelivery()!="null"){
 			var altArray = [];
 			if(nameString()!=undefined&&maxPrice()==undefined&&onlineDelivery()=='null'){
 				for(let rest of placeArray()){
-					if(rest.name.includes(nameString())){
+					var originalString = rest.name.toLowerCase();
+					var searchstring = nameString().toLowerCase();
+					console.log(originalString);
+					console.log(searchstring);
+					if(originalString.includes(searchstring)){
 						altArray.push(rest);
 					}
 					else{
@@ -115,7 +99,10 @@ var viewModel = function(){
 			}
 			else if(nameString()!=undefined&&maxPrice()!=undefined&&onlineDelivery()=='null'){
 				for(let rest of placeArray()){
-					if(rest.name.includes(nameString())&&rest.price_for_two<=maxPrice()){
+					// INSERT REFERENCES
+					var originalString = rest.name.toLowerCase();
+					var searchstring = nameString().toLowerCase();
+					if(originalString.includes(searchstring)&&rest.price_for_two<=maxPrice()){
 						altArray.push(rest);
 					}
 					else{
@@ -127,7 +114,10 @@ var viewModel = function(){
 
 				if(onlineDelivery()=='true'){
 						for(let rest of placeArray()){
-							if(rest.name.includes(nameString())&&rest.online_delivery>0){
+							// INSERT
+							var originalString = rest.name.toLowerCase();
+							var searchstring = nameString().toLowerCase();
+							if(originalString.includes(searchstring)&&rest.online_delivery>0){
 								altArray.push(rest);
 							}
 							else{
@@ -136,7 +126,10 @@ var viewModel = function(){
 						}
 					}else{
 						for(let rest of placeArray()){
-							if(rest.name.includes(nameString())&&rest.online_delivery==0){
+							// INSERT
+							var originalString = rest.name.toLowerCase();
+							var searchstring = nameString().toLowerCase();
+							if(originalString.includes(searchstring)&&rest.online_delivery==0){
 								altArray.push(rest);
 							}
 							else{
@@ -171,7 +164,10 @@ var viewModel = function(){
 			else{
 				if(onlineDelivery()=='true'){
 						for(let rest of placeArray()){
-							if(rest.name.includes(nameString())&&rest.online_delivery>0&&rest.price_for_two<=maxPrice()){
+							// INSERT
+							var originalString = rest.name.toLowerCase();
+							var searchstring = nameString().toLowerCase();
+							if(originalString.includes(searchstring)&&rest.online_delivery>0&&rest.price_for_two<=maxPrice()){
 								altArray.push(rest);
 							}
 							else{
@@ -180,7 +176,10 @@ var viewModel = function(){
 						}
 					}else{
 						for(let rest of placeArray()){
-							if(rest.name.includes(nameString())&&rest.online_delivery==0&&rest.price_for_two<=maxPrice()){
+							// INSERT
+							var originalString = rest.name.toLowerCase();
+							var searchstring = nameString().toLowerCase();
+							if(originalString.includes(searchstring)&&rest.online_delivery==0&&rest.price_for_two<=maxPrice()){
 								altArray.push(rest);
 							}
 							else{
@@ -191,9 +190,11 @@ var viewModel = function(){
 
 
 			}
-			alert(altArray.length+" results Found");
-			placeArray.removeAll();
+			placeArray([]);
 			placeArray(altArray);
+			console.log(placeArray());
+			resultCounter(placeArray().length);
+			assignClick();
 		}
 		else{
 			alert(" No Filters Are Selected. Please Try With Filters Applied.");
@@ -201,11 +202,27 @@ var viewModel = function(){
 
 	}
 
-}
+	self.resetFilters = function(){
+		if(placeArrayCopy.length===0){
+			alert("No Filters Are Applied. Use Reset After Applying Filters.");
+		}
+		else{
+			placeArray([]);
+			placeArray(placeArrayCopy);
+			for(var rest of placeArray()){
+				rest.marker.setMap(map);
+			}
+			resultCounter(placeArray().length);
+		}
+	}
 
+}
+// End of ViewModel
 
 ko.applyBindings(viewModel);
-
+setInterval(function(){
+	console.log(placeArrayCopy);
+},5000)
 
 
 class Restaurants{
@@ -237,14 +254,15 @@ var getRequest = function(lat,lng,radius,start=0){
 				alert("An Error Occurred While Getting Your Request. Error Code : "+response.status);
 			}
 		 }).then(handleData).catch(function(er){
-			alert("There Was a Problem Loading Your Request. Please Try Again Later.");
+			alert("There Was a Problem Loading Your Request.");
 			console.log(er);
 		});
 };
 
 var handleData = function(response){
 		var data = response.restaurants;
-		placeArray.removeAll();
+		placeArray([]);
+		placeArrayCopy.length=0;
 
 		for(let rest of data){
 
@@ -254,10 +272,11 @@ var handleData = function(response){
 				lng: restaurant.lng
 			};
 			if(calculateDistance(centre,loc)<=radius){
-				// console.log(calculateDistance(centre,loc));
+				placeArrayCopy.push(restaurant);
 				placeArray.push(restaurant);}
 
 		}
+		resultCounter(placeArray().length);
 		setInfoWindows();
 		createMarkers();
 		assignInfoToMarkers();
@@ -300,7 +319,6 @@ var createMarkers = function(){
 var assignInfoToMarkers = function(){
 	for(let rest of placeArray()){
 		rest.marker.addListener('click',function(){
-
 			addInfoWindow(rest.infowindow,rest.marker);
 			toggleBounce(rest.marker);
 		});
@@ -349,6 +367,12 @@ var setInfoWindows = function(){
 			});
 			resto.infowindow = infowindow;
 		}
+		assignClick();
+};
+
+
+var assignClick = function(){
+
 		$(".side-list").on('click',function(arg){
 			var targetName = arg.target.innerText;
 			for(let rest of placeArray()){
@@ -358,11 +382,7 @@ var setInfoWindows = function(){
 				}
 			}
 		});
-};
-
-
-
-
+}
 
 
 

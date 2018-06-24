@@ -38,6 +38,7 @@ ul{
 
 .icon{
 	position: absolute;
+	top: 0;
 	width:50px;
 	height: 50px;
 	display: block;
@@ -99,12 +100,12 @@ ul{
 }
 .slideForward{
 	animation-name: slideF;
-	animation-duration: 0.5s;
+	animation-duration: 0.2s;
 }
 
 .slideBackward{
 	animation-name: slideB;
-	animation-duration: 0.5s;
+	animation-duration: 0.2s;
 }
 
 @keyframes slideB {
