@@ -16,7 +16,6 @@ var activeInfoWindow;
 
 
 var viewModel = function(){
-	// console.log("yes");
 	self = this;
 	var slide = false;
 
@@ -40,7 +39,6 @@ var viewModel = function(){
 					setTimeout(function(){
 						$(".sidebar").toggleClass("hidden");
 						$(".sidebar").toggleClass("slideBackward");
-						// console.log("I'm Done");
 						slide=false;
 					},200);
 				}
@@ -55,8 +53,6 @@ var viewModel = function(){
 				for(let rest of placeArray()){
 					var originalString = rest.name.toLowerCase();
 					var searchstring = nameString().toLowerCase();
-					console.log(originalString);
-					console.log(searchstring);
 					if(originalString.includes(searchstring)){
 						altArray.push(rest);
 					}
@@ -192,7 +188,6 @@ var viewModel = function(){
 			}
 			placeArray([]);
 			placeArray(altArray);
-			console.log(placeArray());
 			resultCounter(placeArray().length);
 			assignClick();
 		}
@@ -203,6 +198,9 @@ var viewModel = function(){
 	}
 
 	self.resetFilters = function(){
+		onlineDelivery("null");
+		nameString(undefined);
+		maxPrice(undefined);
 		if(placeArrayCopy.length===0){
 			alert("No Filters Are Applied. Use Reset After Applying Filters.");
 		}
@@ -213,6 +211,7 @@ var viewModel = function(){
 				rest.marker.setMap(map);
 			}
 			resultCounter(placeArray().length);
+			assignClick();
 		}
 	}
 
@@ -220,9 +219,7 @@ var viewModel = function(){
 // End of ViewModel
 
 ko.applyBindings(viewModel);
-setInterval(function(){
-	console.log(placeArrayCopy);
-},5000)
+
 
 
 class Restaurants{
@@ -243,7 +240,6 @@ class Restaurants{
 
 var getRequest = function(lat,lng,radius,start=0){
 		var Zurl = `https://developers.zomato.com/api/v2.1/search?start=${start}&count=20&lat=${lat}&lon=${lng}&radius=${radius}&sort=real_distance&order=asc`;
-		// console.log(Zurl);
 		fetch(Zurl,{
 			headers : Zheader
 		}).then(function(response){
@@ -300,7 +296,6 @@ var createMarkers = function(){
 	}
 	else{
 	for(let rest of placeArray()){
-		// console.log(rest);
 		var pos = {
 			lat: parseFloat(rest.lat),
 			lng: parseFloat(rest.lng)
@@ -400,9 +395,7 @@ var initMap = function(){
 			lng: evt.latLng.lng()
 		};
 		centre = posi;
-		// console.log(centre);
-		// console.log(posi);
-
+		map.setCenter(centre);
 		if(!selectMarker){
 			selectMarker = new google.maps.Marker({
 				position: posi,
