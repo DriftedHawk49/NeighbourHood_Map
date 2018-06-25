@@ -368,6 +368,10 @@ var setInfoWindows = function(){																		// Function that sets the info
 };
 
 
+var googleError = function(){
+	alert("Google APi Failed To Load ! Please Try Later.");
+}
+
 
 
 var initMap = function(){																				// Function That Gets called when the Google Maps API is done loading
