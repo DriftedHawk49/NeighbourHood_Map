@@ -368,7 +368,7 @@ var setInfoWindows = function(){																		// Function that sets the info
 };
 
 
-var googleError = function(){
+var googleError = function(){																			// Function to handle error if Google maps API is not loaded
 	alert("Google APi Failed To Load ! Please Try Later.");
 }
 
